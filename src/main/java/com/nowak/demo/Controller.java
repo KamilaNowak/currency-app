@@ -1,6 +1,7 @@
 package com.nowak.demo;
 
 import com.sun.deploy.security.SelectableSecurityManager;
+import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeEditor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +17,13 @@ import java.util.Map;
 
 @RestController
 public class Controller {
-    WebClient webClient;
-    String WEBSITE_URL = "https://api.exchangeratesapi.io";
-    String URL_BASE = "/latest?base=";
-    String URL_LATEST = "/latest";
-    String URL_SYMBOLS = "/latest?symbols=";
+    private WebClient webClient;
+    private String WEBSITE_URL = "https://api.exchangeratesapi.io";
+    private String URL_BASE = "/latest?base=";
+    private String URL_LATEST = "/latest";
+    private String URL_SYMBOLS = "/latest?symbols=";
+    private String URL_HISTORY_START ="/history?start_at=";
+    private String URL_HISTORY_END ="&end_at=";
 
     @PostConstruct
     public void init() {
@@ -28,26 +31,26 @@ public class Controller {
     }
 
     @GetMapping(value = "/currency")
-    public Mono<String> getAll(HttpServletRequest request) {
+    public Mono<JSONObject> getAll(HttpServletRequest request) {
         return webClient.get()
                 .uri(WEBSITE_URL + URL_LATEST)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(JSONObject.class);
     }
 
     @GetMapping(value = "/currency/base/{base}")
-    public Mono<String> getByDate(@PathVariable("base") String base) {
+    public Mono<JSONObject> getByDate(@PathVariable("base") String base) {
         return webClient.get()
                 .uri(WEBSITE_URL + URL_BASE + base)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(response -> response.bodyToMono(String.class));
+                .flatMap(response -> response.bodyToMono(JSONObject.class));
     }
 
     @GetMapping(value = {"/currency/symbols/{symbols}",
             "/currency/symbols/{symbols}/{base}"})
-    public Mono<String> getBySymbols(@PathVariable Map<String, String> pathVariables) {
+    public Mono<JSONObject> getBySymbols(@PathVariable Map<String, String> pathVariables) {
         String tempuri = null;
         if (pathVariables.containsKey("base")) {
             tempuri = WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols") + "&base=" + pathVariables.get("base");
@@ -59,6 +62,37 @@ public class Controller {
                 .uri(tempuri)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(res -> res.bodyToMono(String.class));
+                .flatMap(res -> res.bodyToMono(JSONObject.class));
+    }
+
+    //https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,PLN&base=GBP
+    @GetMapping(value ={ "/currency/date/{date}/{symbols}/{base}",
+                        "/currency/date/{date}/{symbols}",
+                        "/currency/date/{date}"})
+    public Mono<JSONObject> getCurrencyByDate(@PathVariable Map<String,String> pathVariablesmap){
+        String tempUrl=null;
+        if(pathVariablesmap.containsKey("base")){
+            tempUrl=WEBSITE_URL+URL_HISTORY_START
+                    +pathVariablesmap.get("date")
+                    +URL_HISTORY_END+ pathVariablesmap.get("date")
+                    +"&symbols="+pathVariablesmap.get("symbols")
+                    +"&base="+pathVariablesmap.get("base");
+        }
+        else if(!pathVariablesmap.containsKey("base") && pathVariablesmap.containsKey("symbols")){
+            tempUrl=WEBSITE_URL+URL_HISTORY_START
+                    +pathVariablesmap.get("date")
+                    +URL_HISTORY_END+ pathVariablesmap.get("date")
+                    +"&symbols="+pathVariablesmap.get("symbols");
+        }
+        else  if(!pathVariablesmap.containsKey("base") && !pathVariablesmap.containsKey("symbols")){
+            tempUrl = WEBSITE_URL + URL_HISTORY_START
+                    + pathVariablesmap.get("date")
+                    + URL_HISTORY_END + pathVariablesmap.get("date");
+        }
+        return webClient.get()
+                .uri(tempUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .flatMap(response ->response.bodyToMono(JSONObject.class));
     }
 }
