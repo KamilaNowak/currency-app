@@ -1,4 +1,4 @@
-package com.nowak.demo;
+package com.nowak.demo.controlers;
 
 import com.sun.deploy.security.SelectableSecurityManager;
 import net.minidev.json.JSONObject;
@@ -16,7 +16,7 @@ import javax.validation.constraints.Past;
 import java.util.Map;
 
 @RestController
-public class Controller {
+public class APIController {
     private WebClient webClient;
     private String WEBSITE_URL = "https://api.exchangeratesapi.io";
     private String URL_BASE = "/latest?base=";

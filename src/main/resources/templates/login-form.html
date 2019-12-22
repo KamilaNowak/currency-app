@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+    </style>
+</head>
+<body style="background-color:#f2f2f2;">
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Log In</h5>
+                    <br>
+                    <form class="form-signin">
+                        <div class="form-label-group">
+                            <input type="email" id="loginEmail" name="loginEmail" class="form-control" placeholder="Email "   style="border-radius:45px" required>
+                        </div>
+                        <br>
+                        <div class="form-label-group">
+                            <input type="password" id="loginPassword" name="loginPassword" class="form-control"   style="border-radius:45px"placeholder="Password"
+                                   required>
+                        </div>
+                        <br>
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="loginRemmber">
+                            <label class="custom-control-label" for="customCheck1">Remember me</label>
+                        </div>
+                        <button class="btn btn-lg btn-dark btn-block" type="submit" style="border-radius:45px">Log in
+                        </button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-7 col-lg-5 mx-auto ">
+            <div class="card card-signin my-5 ">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Register </h5>
+                    <p> If you do not have your account created yet - just simply do it now.
+                    <hr>
+                    <form class="form-signin ">
+                        <div class="form-label-group">
+                            <input type="email" id="registerEmail"   style="border-radius:45px" class="form-control" placeholder="Email " required>
+                        </div>
+                        <br>
+                        <div class="form-label-group">
+                            <input type="password" id="registerPassword"   style="border-radius:45px" class="form-control" placeholder="Password"
+                                   required>
+                        </div>
+                        <br>
+                        <div class="form-label-group">
+                            <input type="text"  style="border-radius:45px" id="registerPhonenumber" class="form-control" placeholder="Phone number"
+                                   required>
+                        </div>
+                        <br>
+                        <button class="btn btn-lg btn-secondary btn-block" type="submit" style="border-radius:45px">Register
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
