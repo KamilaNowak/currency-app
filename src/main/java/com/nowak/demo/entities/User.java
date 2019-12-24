@@ -1,8 +1,5 @@
 package com.nowak.demo.entities;
 
-
-
-
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -10,14 +7,32 @@ import java.util.Collection;
 @Table(name="users")
 public class User {
 
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="email")
     private String email;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name="phonenumber")
     private String phoneNumber;
 
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name="users_subs", joinColumns = @JoinColumn(name="user_email"), inverseJoinColumns = @JoinColumn(name="subs_id"))
+    @JoinTable(name="users_subs", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="sub_id"))
     private Collection<Subscription> subscriptionCollection;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;

@@ -3,7 +3,7 @@ package com.nowak.demo.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscription")
+@Table(name = "subscriptions")
 public class Subscription {
 
     @Id
@@ -11,6 +11,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name="subscription")
     private String subscription;
 
     public int getId() {
