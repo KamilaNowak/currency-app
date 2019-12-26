@@ -11,13 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class LoginController {
 
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserService userService;
+    private  BCryptPasswordEncoder bCryptPasswordEncoder;
+    private  UserService userService;
 
     @Autowired
     public LoginController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -25,22 +28,5 @@ public class LoginController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @GetMapping("/register")
-    public String processLogin(@ModelAttribute("userModel") UserModel userModel, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "login-form";
-        }
-        User user = null;
-        user = userService.findByEmail(userModel.getEmail());
-        if (user != null) {
-            return "login-form";
-        } else {
-            User newUser = new User();
-            newUser.setEmail(userModel.getEmail());
-            newUser.setPassword(bCryptPasswordEncoder.encode(userModel.getPassword()));
-            newUser.setPhoneNumber(userModel.getPhonenumber());
-            userService.save(newUser);
-        }
-        return "login-form";
-    }
+
 }

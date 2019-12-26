@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubscriptionRepository extends CrudRepository<Subscription, Integer> {
+
+    Subscription findBySubscription(String name);
 }

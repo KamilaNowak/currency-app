@@ -1,6 +1,5 @@
 package com.nowak.demo.controlers;
 
-import com.sun.deploy.security.SelectableSecurityManager;
 import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeEditor;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Currency Converter</title>
     <meta charset="utf-8">
@@ -85,7 +86,10 @@
             <div class="carousel-caption d-none d-md-block">
                 <h2><b>Every day actual</b></h2>
                 <p> Data presented on this website are always up-to-date because of using API to exchange values</p>
-                <a class="btn btn-outline-light" style="border-radius:100px;" href="#"> Try this app</a>
+                <form th:action="@{/login}">
+                    <button class="btn btn-outline-light" style="border-radius:100px;" type="submit"> Try this app</button>
+                </form>
+
             </div>
         </div>
         <div class="carousel-item">
@@ -94,7 +98,9 @@
             <div class="carousel-caption d-none d-md-block">
                 <h2><b>Choose every currency you want </b></h2>
                 <p>You can convert to a wide range of global currencies. Just choose it and get the value.</p>
-                <a class="btn btn-outline-light" style="border-radius:100px;" href="#"> Try this app</a>
+                <form th:action="@{/login}">
+                    <button class="btn btn-outline-light" style="border-radius:100px;" type="submit"> Try this app</button>
+                </form>
             </div>
         </div>
         <div class="carousel-item">
@@ -103,7 +109,9 @@
             <div class="carousel-caption d-none d-md-block">
                 <h2><b> Various options of converting</b></h2>
                 <p>Exchange values by typing base currency, check currencies from every date and much more</p>
-                <a class="btn btn-outline-light" style="border-radius:100px;" href="#"> Try this app</a>
+                <form th:action="@{/login}">
+                    <button class="btn btn-outline-light" style="border-radius:100px;" type="submit"> Try this app</button>
+                </form>
             </div>
         </div>
     </div>
@@ -117,7 +125,6 @@
     </a>
 </div>
 </body>
-</html>
 </div>
 </body>
 </html>
