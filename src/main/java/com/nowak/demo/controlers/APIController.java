@@ -1,10 +1,14 @@
 package com.nowak.demo.controlers;
 
+import com.nowak.demo.java_objects.LatestDto;
+import com.nowak.demo.json_pojos.Latest;
+import com.nowak.demo.json_pojos.Rates;
 import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeEditor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -12,11 +16,13 @@ import reactor.core.publisher.Mono;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Past;
-import java.util.Map;
+import java.util.*;
 
 @RestController
+@RequestMapping("/api")
 public class APIController {
     private WebClient webClient;
+    private List<LatestDto> latest;
     private String WEBSITE_URL = "https://api.exchangeratesapi.io";
     private String URL_BASE = "/latest?base=";
     private String URL_LATEST = "/latest";
@@ -27,6 +33,7 @@ public class APIController {
     @PostConstruct
     public void init() {
         webClient = WebClient.create(WEBSITE_URL);
+        latest = new ArrayList();
     }
 
     @GetMapping(value = "/currency")
@@ -37,6 +44,7 @@ public class APIController {
                 .retrieve()
                 .bodyToMono(JSONObject.class);
     }
+
 
     @GetMapping(value = "/currency/base/{base}")
     public Mono<JSONObject> getByDate(@PathVariable("base") String base) {
@@ -56,7 +64,7 @@ public class APIController {
         } else
             tempuri = WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols");
 
-        System.out.println(WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols"));
+        System.out.println(tempuri);
         return webClient.get()
                 .uri(tempuri)
                 .accept(MediaType.APPLICATION_JSON)

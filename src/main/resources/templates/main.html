@@ -2,10 +2,166 @@
 <html lang="en">
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Currency app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            position: relative;
+        }
+
+        .contentClass {
+            background: url("https://oneness.rikkazimmerman.com/wp-content/uploads/2014/04/BG-Money-SLM-2.jpg") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            filter: brightness(100%);
+            opacity: 0.99;
+        }
+    </style>
+
+    <script>
+        function generateUrlBase() {
+            var userInput = document.getElementById('baseTextField').value;
+            var hostLink = "http://localhost:8081/currency/base/";
+            hostLink = hostLink+userInput;
+            baseForm.action=hostLink;
+        }
+        function  generateUrlSymbols() {
+            var userInput=document.getElementById('inputCurrencies').value;
+            var link =  "http://localhost:8081/currency/symbols/";
+            link = link+userInput;
+            symbolsForm.action = link;
+        }
+        function generateUrlBaseSymbols() {
+            var bsaeInput = document.getElementById('baseBoth').value;
+            var symbolsInput =document.getElementById('symbolsBoth').value;
+            var link= "http://localhost:8081/currency/symbols/"
+            link=link+symbolsInput+"/"+bsaeInput;
+            baseSymbolsForm.action =link;
+        }
+    </script>
 </head>
-<body>
-Successfully logged in!
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+<div class="myNavs">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#latest">Latest</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#section2">By Date</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#section3">Historical</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    Section 4
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#section41">Link 1</a>
+                    <a class="dropdown-item" href="#section42">Link 2</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="contentClass">
+    <div id="latest" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+        <div class="container">
+            <h1>Latest</h1>
+            <p>All latest currencies, from CYD to MYR</p>
+            <div class="row">
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    Base <span class="badge badge-warning"><span th:text="${latestBase}"/> </span><br>
+                    From day <span class="badge badge-danger"><span th:text="${latestDate}"/></span>
+                    <br>
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="temp : ${latestDto}">
+
+                            <td style="width:70px"><span class="badge badge-primary"><span
+                                    th:text="${temp.currencyName}"/></span>
+                            </td>
+                            <td><span class="badge badge-success"><span th:text="${temp.currencyValue}"/></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    <div th:if="${error_message}" class="alert alert-danger alert-dismissible fade show text-center"
+                         role="alert" th:text="${error_message}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                        <strong><span th:text="${error_message}"/></strong>
+                    </div>
+                    <hr>
+                    <form th:action="@{/home}" method="get">
+                        <button type="submit" class="btn btn-outline-dark" style="border-radius:45px">Reset values</button>
+                    </form>
+                    <hr>
+                    <form  onsubmit="generateUrlBase()" class="form-inline" id="baseForm" method="get">
+                        <div class="form-group mb-2">
+                            Type currency to change base. Default is EUR
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="baseTextField" class="sr-only">Base</label>
+                            <input type="text" id="baseTextField" class="form-control"  placeholder="Currency" required>
+                        </div>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                    </form>
+                    <hr>
+                    <form onsubmit="generateUrlSymbols()" method="get" id="symbolsForm" class="form-inline">
+                        <div class="form-group mb-2">
+                            Type only wanted currencies. For example 'PLN,GBP'
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="inputCurrencies" class="sr-only">Currency</label>
+                            <input type="text" class="form-control" id="inputCurrencies" placeholder="Currency" required>
+                        </div>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                    </form>
+                    <hr>
+                    <form onsubmit="generateUrlBaseSymbols()" method="get" id="baseSymbolsForm" class="form-inline">
+                        <div class="form-group mb-2">
+                            Specify also Base currency and wanted symbols
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="baseBoth" class="sr-only">Base</label>
+                            <input type="text" class="form-control" id="baseBoth" name="baseBoth" placeholder="Base" >
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="symbolsBoth" class="sr-only">Currency</label>
+                            <input type="text" class="form-control" id="symbolsBoth" name="symbolsBoth" placeholder="Currency" required>
+                        </div>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="section2" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+
+    </div>
+    <hr>
+    <div id="section3" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+
+    </div>
+    <hr>
+    <div id="section41" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+
+    </div>
+    <hr>
+</div>
+
 </body>
 </html>

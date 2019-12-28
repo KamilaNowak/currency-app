@@ -33,28 +33,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/login","/home","/process-login").permitAll()
-                    .antMatchers("/home").permitAll()
+                .antMatchers("/", "/login", "/home", "/process-login").permitAll()
+                .antMatchers("/home").permitAll()
                 .and()
-                    .formLogin()
-                    .loginPage("/login").permitAll()
-                    //     .defaultSuccessUrl("/home")
-                    .loginProcessingUrl("/process-login")
-                         .successHandler(authProvider)
-//                .usernameParameter("loginEmail")
-//                    .passwordParameter("loginPassword")
+                .formLogin()
+                .loginPage("/login").permitAll()
+                //     .defaultSuccessUrl("/home")
+                .loginProcessingUrl("/process-login")
+                .successHandler(authProvider)
+                      .usernameParameter("username")
+                    .passwordParameter("password")
                 .and()
-                    .rememberMe()  //default 2 w
-                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(28))
-                    .key("rememebermeSecurekey") //key to hash username and exp date
-                    .rememberMeParameter("loginRemmber")
+                .rememberMe()  //default 2 w
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(28))
+                .key("rememebermeSecurekey") //key to hash username and exp date
+                .rememberMeParameter("loginRemmber")
                 .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .clearAuthentication(true)
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "remember-me")
-                    .logoutUrl("/logout");
+                .logout()
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutUrl("/logout");
 
     }
 
