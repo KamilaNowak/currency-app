@@ -24,8 +24,9 @@ import java.util.*;
 
 @Controller
 public class ViewController {
+
     private WebClient webClient;
-    private List<LatestDto> latest;
+    private List<LatestDto> latest, historical;
     LatestListOperations latestListOperations;
 
     private String WEBSITE_URL = "https://api.exchangeratesapi.io";
@@ -35,19 +36,23 @@ public class ViewController {
     private String URL_HISTORY_START = "/history?start_at=";
     private String URL_HISTORY_END = "&end_at=";
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
+    private final SubscriptionService subscriptionService;
+
+    public ViewController(BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService, SubscriptionService subscriptionService) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userService = userService;
+        this.subscriptionService = subscriptionService;
+    }
+
     @PostConstruct
     public void init() {
         webClient = WebClient.create(WEBSITE_URL);
         latest = new ArrayList();
+        historical = new ArrayList<>();
         latestListOperations = new LatestListOperations();
     }
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SubscriptionService subscriptionService;
 
     @GetMapping("/")
     public String getLandingPage() {
@@ -109,6 +114,7 @@ public class ViewController {
         model.addAttribute("latestBase", Objects.requireNonNull(r.block()).getBase());
         return "main";
     }
+
     @GetMapping(value = {"/currency/symbols/{symbols}",
             "/currency/symbols/{symbols}/{base}"})
     public String getBySymbols(@PathVariable Map<String, String> pathVariables, Model model) {
@@ -117,25 +123,43 @@ public class ViewController {
         if (pathVariables.containsKey("base")) {
             tempuri = WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols") + "&base=" + pathVariables.get("base");
         } else {
-            String symbols= pathVariables.get("symbols");
-            if(symbols.equals("EUR")){
+            String symbols = pathVariables.get("symbols");
+            if (symbols.equals("EUR")) {
                 model.addAttribute("error_message", "You cannot view currency which is specified as base!");
                 return "main";
-            }
-            else
-            tempuri = WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols");
+            } else
+                tempuri = WEBSITE_URL + URL_SYMBOLS + pathVariables.get("symbols");
         }
-        System.out.println(tempuri);
-        Mono<Latest> latestMono= webClient.get()
+
+        Mono<Latest> latestMono = webClient.get()
                 .uri(tempuri)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Latest.class);
         latest.clear();
-        latestListOperations.convertAndAddToList(latestMono,latest);
+        latest = latestListOperations.convertAndAddToList(latestMono, latest);
         model.addAttribute("latestDto", latest);
         model.addAttribute("latestDate", Objects.requireNonNull(latestMono.block()).getDate());
         model.addAttribute("latestBase", Objects.requireNonNull(latestMono.block()).getBase());
         return "main";
     }
+
+    @GetMapping(value = "/currency/date/{date}")
+    public String getCurrencyByDate(@PathVariable("date") String date, Model model) {
+        String tempUrl = null;
+        tempUrl = WEBSITE_URL +"/"+ date;
+        Mono<Latest> historicalMono = webClient.get()
+                .uri(tempUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Latest.class);
+
+        historical.clear();
+        historical = latestListOperations.convertAndAddToList(historicalMono, historical);
+        model.addAttribute("histDto", historical);
+        model.addAttribute("histDate", Objects.requireNonNull(Objects.requireNonNull(historicalMono.block()).getDate()));
+        model.addAttribute("histBase", Objects.requireNonNull(historicalMono.block()).getBase());
+        return "main";
+    }
+
 }

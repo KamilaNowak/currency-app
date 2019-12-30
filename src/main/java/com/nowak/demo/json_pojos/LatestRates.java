@@ -45,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "KRW",
         "MYR"
 })
-public class Rates {
+public class LatestRates {
 
     @JsonProperty("CAD")
     private Double cAD;

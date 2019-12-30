@@ -3,9 +3,7 @@ package com.nowak.demo.ops;
 import com.nowak.demo.java_objects.LatestDto;
 import com.nowak.demo.json_pojos.Latest;
 import reactor.core.publisher.Mono;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LatestListOperations {
     public List<LatestDto> convertAndAddToList(Mono<Latest> latestMono, List<LatestDto> finalList) {

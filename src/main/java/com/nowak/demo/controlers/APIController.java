@@ -2,7 +2,6 @@ package com.nowak.demo.controlers;
 
 import com.nowak.demo.java_objects.LatestDto;
 import com.nowak.demo.json_pojos.Latest;
-import com.nowak.demo.json_pojos.Rates;
 import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeEditor;

@@ -1,4 +1,3 @@
-
 package com.nowak.demo.json_pojos;
 
 import java.util.HashMap;
@@ -12,49 +11,36 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "rates",
-        "base",
-        "date"
+        "data",
+        "cena"
 })
-public class Latest {
+public class Gold {
 
-    @JsonProperty("rates")
-    private LatestRates rates;
-    @JsonProperty("base")
-    private String base;
-    @JsonProperty("date")
-    private String date;
+    @JsonProperty("data")
+    private String data;
+    @JsonProperty("cena")
+    private Double cena;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("rates")
-    public LatestRates getRates() {
-        return rates;
+    @JsonProperty("data")
+    public String getData() {
+        return data;
     }
 
-    @JsonProperty("rates")
-    public void setRates(LatestRates rates) {
-        this.rates = rates;
+    @JsonProperty("data")
+    public void setData(String data) {
+        this.data = data;
     }
 
-    @JsonProperty("base")
-    public String getBase() {
-        return base;
+    @JsonProperty("cena")
+    public Double getCena() {
+        return cena;
     }
 
-    @JsonProperty("base")
-    public void setBase(String base) {
-        this.base = base;
-    }
-
-    @JsonProperty("date")
-    public String getDate() {
-        return date;
-    }
-
-    @JsonProperty("date")
-    public void setDate(String date) {
-        this.date = date;
+    @JsonProperty("cena")
+    public void setCena(Double cena) {
+        this.cena = cena;
     }
 
     @JsonAnyGetter

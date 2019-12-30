@@ -15,39 +15,68 @@
         }
 
         .contentClass {
-            background: url("https://oneness.rikkazimmerman.com/wp-content/uploads/2014/04/BG-Money-SLM-2.jpg") no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            filter: brightness(100%);
-            opacity: 0.99;
+            /*background: url("https://oneness.rikkazimmerman.com/wp-content/uploads/2014/04/BG-Money-SLM-2.jpg") no-repeat center center fixed;*/
+            /*-webkit-background-size: cover;*/
+            /*-moz-background-size: cover;*/
+            /*-o-background-size: cover;*/
+            /*background-size: 100%;*/
+            /*filter: brightness(100%);*/
+            /*opacity: 0.99;*/
         }
     </style>
-
     <script>
         function generateUrlBase() {
             var userInput = document.getElementById('baseTextField').value;
             var hostLink = "http://localhost:8081/currency/base/";
-            hostLink = hostLink+userInput;
-            baseForm.action=hostLink;
+            hostLink = hostLink + userInput;
+            baseForm.action = hostLink;
         }
-        function  generateUrlSymbols() {
-            var userInput=document.getElementById('inputCurrencies').value;
-            var link =  "http://localhost:8081/currency/symbols/";
-            link = link+userInput;
+
+        function generateUrlSymbols() {
+            var userInput = document.getElementById('inputCurrencies').value;
+            var link = "http://localhost:8081/currency/symbols/";
+            link = link + userInput;
             symbolsForm.action = link;
         }
+
         function generateUrlBaseSymbols() {
             var bsaeInput = document.getElementById('baseBoth').value;
-            var symbolsInput =document.getElementById('symbolsBoth').value;
-            var link= "http://localhost:8081/currency/symbols/"
-            link=link+symbolsInput+"/"+bsaeInput;
-            baseSymbolsForm.action =link;
+            var symbolsInput = document.getElementById('symbolsBoth').value;
+            var link = "http://localhost:8081/currency/symbols/";
+            link = link + symbolsInput + "/" + bsaeInput;
+            baseSymbolsForm.action = link;
+        }
+
+        function generateUrlByDate() {
+            var dateInput = document.getElementById('example-date-input').value;
+            var link = "http://localhost:8081/currency/date/";
+            link = link + dateInput;
+            dateForm.action = link;
+        }
+
+        function generateUrlGold() {
+            var link = "http://localhost:8081/gold";
+            goldForm.action = link;
+        }
+
+        function generateUrlDateGold() {
+            var goldId = document.getElementById('goldDateInput').value;
+            var link = "http://localhost:8081/gold/";
+            link = link + goldId;
+            goldDateForm.action = link;
+        }
+
+        function generateUrlDateRangeGold() {
+            var r1 = document.getElementById('goldDateRangeInput1').value;
+            var r2 = document.getElementById('goldDateRangeInput2').value;
+            var slash = "/";
+            var link = "http://localhost:8081/gold/";
+            link = link + r1 + slash + r2;
+            goldDateRangeForm.action = link;
         }
     </script>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
+<body data-spy="scroll" data-target=".navbar" data-offset="50"  style="background-color:#ffffe6;">
 <div class="myNavs">
     <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
         <ul class="navbar-nav">
@@ -55,10 +84,10 @@
                 <a class="nav-link" href="#latest">Latest</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#section2">By Date</a>
+                <a class="nav-link" href="#byDate">By Date</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#section3">Historical</a>
+                <a class="nav-link" href="#gold">Gold</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -104,18 +133,21 @@
                     </div>
                     <hr>
                     <form th:action="@{/home}" method="get">
-                        <button type="submit" class="btn btn-outline-dark" style="border-radius:45px">Reset values</button>
+                        <button type="submit" class="btn btn-outline-dark" style="border-radius:45px">Reset values
+                        </button>
                     </form>
                     <hr>
-                    <form  onsubmit="generateUrlBase()" class="form-inline" id="baseForm" method="get">
+                    <form onsubmit="generateUrlBase()" class="form-inline" id="baseForm" method="get">
                         <div class="form-group mb-2">
                             Type currency to change base. Default is EUR
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="baseTextField" class="sr-only">Base</label>
-                            <input type="text" id="baseTextField" class="form-control"  placeholder="Currency" required>
+                            <input type="text" id="baseTextField" class="form-control" placeholder="Currency" required>
                         </div>
-                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">
+                            Confirm
+                        </button>
                     </form>
                     <hr>
                     <form onsubmit="generateUrlSymbols()" method="get" id="symbolsForm" class="form-inline">
@@ -124,9 +156,12 @@
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="inputCurrencies" class="sr-only">Currency</label>
-                            <input type="text" class="form-control" id="inputCurrencies" placeholder="Currency" required>
+                            <input type="text" class="form-control" id="inputCurrencies" placeholder="Currency"
+                                   required>
                         </div>
-                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">
+                            Confirm
+                        </button>
                     </form>
                     <hr>
                     <form onsubmit="generateUrlBaseSymbols()" method="get" id="baseSymbolsForm" class="form-inline">
@@ -135,13 +170,16 @@
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="baseBoth" class="sr-only">Base</label>
-                            <input type="text" class="form-control" id="baseBoth" name="baseBoth" placeholder="Base" >
+                            <input type="text" class="form-control" id="baseBoth" name="baseBoth" placeholder="Base">
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="symbolsBoth" class="sr-only">Currency</label>
-                            <input type="text" class="form-control" id="symbolsBoth" name="symbolsBoth" placeholder="Currency" required>
+                            <input type="text" class="form-control" id="symbolsBoth" name="symbolsBoth"
+                                   placeholder="Currency" required>
                         </div>
-                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">Confirm</button>
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">
+                            Confirm
+                        </button>
                     </form>
                     <hr>
                 </div>
@@ -149,19 +187,135 @@
         </div>
     </div>
     <hr>
-    <div id="section2" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+    <div id="byDate" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+        <div class="container">
+            <h1>Latest by date</h1>
+            <p>All latest currencies you can view with specified date</p>
+            <p>Default currency base is <span class="badge badge-warning">EUR</span></p>
+            <div class="row">
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    Base <span class="badge badge-warning"><span th:text="${histBase}"/> </span><br>
+                    From day <span class="badge badge-danger"><span th:text="${histDate}"/></span>
+                    <br>
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="temp : ${histDto}">
 
-    </div>
-    <hr>
-    <div id="section3" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+                            <td style="width:70px"><span class="badge badge-primary"><span
+                                    th:text="${temp.currencyName}"/></span>
+                            </td>
+                            <td><span class="badge badge-success"><span th:text="${temp.currencyValue}"/></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    <form onsubmit="generateUrlByDate()" method="get" id="dateForm" class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="baseBoth" class="sr-only">Date</label>
+                            <div class="form-group row">
+                                <label for="example-date-input" class="col-2 col-form-label">Date</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="date" value="20-08-2019" id="example-date-input">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-light border border-dark mb-2"
+                                    style="border-radius:45px">Confirm
+                            </button>
 
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <hr>
-    <div id="section41" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
-
-    </div>
-    <hr>
 </div>
+<hr>
+<div id="gold" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+    <div class="container">
+        <h1>Gold price</h1>
+        <p>Fresh prices of gold</p>
+        <div class="row">
+            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                Imported from <span class="badge badge-danger">NBP</span>
+                <br>
+                <table class="table">
+                    <tbody>
+                    <tr th:each="temp : ${goldDtoList}">
 
+                        <td style="width:70px"><span class="badge badge-primary"><span
+                                th:text="${temp.date}"/></span>
+                        </td>
+                        <td><span class="badge badge-success"><span th:text="${temp.price}"/></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                <div th:if="${error_message_gold}" class="alert alert-danger alert-dismissible fade show text-center"
+                     role="alert" th:text="${error_message_gold}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                    <strong><span th:text="${error_message_gold}"/></strong>
+                </div>
+                <br>
+                <form onsubmit="generateUrlGold()" method="get" id="goldForm">
+                    <div class="form-group mb-2">
+                        Show latest
+                        <button type="submit" class="btn btn-light border border-dark mb-2" style="border-radius:45px">
+                            Confirm
+                        </button>
+                    </div>
+
+                </form>
+                <hr>
+                <form onsubmit="generateUrlDateGold()" method="get" id="goldDateForm" class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="baseBoth" class="sr-only">Date</label>
+                    </div>
+                        <div class="form-group row">
+                            <label for="example-date-input" class="col-2 col-form-label">Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" value="01-01-2010" id="goldDateInput">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-light border border-dark mb-2"
+                                style="border-radius:45px">Confirm
+                        </button>
+                </form>
+                <hr>
+                <form onsubmit="generateUrlDateRangeGold()" method="get" id="goldDateRangeForm" class="form-inline">
+                        <div class="form-group mb-2">
+                            Check gold prices from a range of dates
+                        </div>
+                        <label for="baseBoth" class="sr-only">Date</label>
+                        <div class="form-group row">
+                            <label for="example-date-input" class="col-2 col-form-label">Start</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput1">
+                            </div>
+
+                            <label for="example-date-input" class="col-2 col-form-label">End</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput2">
+                            </div>
+                        </div>
+                    <br>
+                        <button type="submit" class="btn btn-light border border-dark mb-2"
+                                style="border-radius:45px">Confirm
+                        </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div id="section41" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+
+</div>
+<hr>
+</div>
 </body>
 </html>
