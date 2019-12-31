@@ -1,5 +1,6 @@
 package com.nowak.demo.controlers;
 
+import com.nowak.demo.objects.Currencies;
 import com.nowak.demo.ops.LatestListOperations;
 import com.nowak.demo.entities.User;
 import com.nowak.demo.java_objects.LatestDto;
@@ -27,6 +28,7 @@ public class ViewController {
 
     private WebClient webClient;
     private List<LatestDto> latest, historical;
+    private  List<Currencies> currencies;
     LatestListOperations latestListOperations;
 
     private String WEBSITE_URL = "https://api.exchangeratesapi.io";
@@ -51,6 +53,7 @@ public class ViewController {
         webClient = WebClient.create(WEBSITE_URL);
         latest = new ArrayList();
         historical = new ArrayList<>();
+        currencies= new ArrayList<>();
         latestListOperations = new LatestListOperations();
     }
 
@@ -74,6 +77,8 @@ public class ViewController {
         latest.clear();
         latest = latestListOperations.convertAndAddToList(r, latest);
         model.addAttribute("latestDto", latest);
+        currencies = latestListOperations.getAllCurrencies();
+        model.addAttribute("currencies",currencies);
         model.addAttribute("latestDate", Objects.requireNonNull(r.block()).getDate());
         model.addAttribute("latestBase", Objects.requireNonNull(r.block()).getBase());
         return "main";
@@ -109,6 +114,7 @@ public class ViewController {
                 .bodyToMono(Latest.class);
         latest.clear();
         latest = latestListOperations.convertAndAddToList(r, latest);
+        model.addAttribute("currencies",currencies);
         model.addAttribute("latestDto", latest);
         model.addAttribute("latestDate", Objects.requireNonNull(r.block()).getDate());
         model.addAttribute("latestBase", Objects.requireNonNull(r.block()).getBase());
@@ -136,7 +142,9 @@ public class ViewController {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Latest.class);
+
         latest.clear();
+
         latest = latestListOperations.convertAndAddToList(latestMono, latest);
         model.addAttribute("latestDto", latest);
         model.addAttribute("latestDate", Objects.requireNonNull(latestMono.block()).getDate());
@@ -148,17 +156,23 @@ public class ViewController {
     public String getCurrencyByDate(@PathVariable("date") String date, Model model) {
         String tempUrl = null;
         tempUrl = WEBSITE_URL +"/"+ date;
-        Mono<Latest> historicalMono = webClient.get()
-                .uri(tempUrl)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Latest.class);
+        try {
+            Mono<Latest> historicalMono = webClient.get()
+                    .uri(tempUrl)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(Latest.class);
 
-        historical.clear();
-        historical = latestListOperations.convertAndAddToList(historicalMono, historical);
-        model.addAttribute("histDto", historical);
-        model.addAttribute("histDate", Objects.requireNonNull(Objects.requireNonNull(historicalMono.block()).getDate()));
-        model.addAttribute("histBase", Objects.requireNonNull(historicalMono.block()).getBase());
+            historical.clear();
+            historical = latestListOperations.convertAndAddToList(historicalMono, historical);
+            model.addAttribute("histDto", historical);
+            model.addAttribute("histDate", Objects.requireNonNull(Objects.requireNonNull(historicalMono.block()).getDate()));
+            model.addAttribute("histBase", Objects.requireNonNull(historicalMono.block()).getBase());
+        }
+        catch (Exception e){
+            model.addAttribute("error_message_date", "Something went wrong. Please check if input data are correct.");
+            return "main";
+        }
         return "main";
     }
 

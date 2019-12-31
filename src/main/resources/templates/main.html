@@ -74,9 +74,19 @@
             link = link + r1 + slash + r2;
             goldDateRangeForm.action = link;
         }
+
+        function generateUrlConvert() {
+            var c1 = document.getElementById('symbolFrom').value;
+            var c2 = document.getElementById('symbolTo').value;
+            var val = document.getElementById('convertValue').value;
+            var slash = "/";
+            var link = "http://localhost:8081/convert/";
+            link = link + val + slash + c1 + slash + c2;
+            convertForm.action = link;
+        }
     </script>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50"  style="background-color:#ffffe6;">
+<body data-spy="scroll" data-target=".navbar" data-offset="50" style="background-color:#ffffe6;">
 <div class="myNavs">
     <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
         <ul class="navbar-nav">
@@ -90,13 +100,7 @@
                 <a class="nav-link" href="#gold">Gold</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Section 4
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#section41">Link 1</a>
-                    <a class="dropdown-item" href="#section42">Link 2</a>
-                </div>
+                <a class="nav-link" href="#converter"><span class="badge badge-warning">Converter</span></a>
             </li>
         </ul>
     </nav>
@@ -210,6 +214,14 @@
                     </table>
                 </div>
                 <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    <div th:if="${error_message_date}"
+                         class="alert alert-danger alert-dismissible fade show text-center"
+                         role="alert" th:text="${error_message_date}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                        <strong><span th:text="${error_message_date}"/></strong>
+                    </div>
                     <form onsubmit="generateUrlByDate()" method="get" id="dateForm" class="form-inline">
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="baseBoth" class="sr-only">Date</label>
@@ -274,46 +286,91 @@
                     <div class="form-group mx-sm-3 mb-2">
                         <label for="baseBoth" class="sr-only">Date</label>
                     </div>
-                        <div class="form-group row">
-                            <label for="example-date-input" class="col-2 col-form-label">Date</label>
-                            <div class="col-10">
-                                <input class="form-control" type="date" value="01-01-2010" id="goldDateInput">
-                            </div>
+                    <div class="form-group row">
+                        <label for="example-date-input" class="col-2 col-form-label">Date</label>
+                        <div class="col-10">
+                            <input class="form-control" type="date" value="01-01-2010" id="goldDateInput">
                         </div>
-                        <button type="submit" class="btn btn-light border border-dark mb-2"
-                                style="border-radius:45px">Confirm
-                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-light border border-dark mb-2"
+                            style="border-radius:45px">Confirm
+                    </button>
                 </form>
                 <hr>
                 <form onsubmit="generateUrlDateRangeGold()" method="get" id="goldDateRangeForm" class="form-inline">
-                        <div class="form-group mb-2">
-                            Check gold prices from a range of dates
+                    <div class="form-group mb-2">
+                        Check gold prices from a range of dates
+                    </div>
+                    <label for="baseBoth" class="sr-only">Date</label>
+                    <div class="form-group row">
+                        <label for="example-date-input" class="col-2 col-form-label">Start</label>
+                        <div class="col-10">
+                            <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput1">
                         </div>
-                        <label for="baseBoth" class="sr-only">Date</label>
-                        <div class="form-group row">
-                            <label for="example-date-input" class="col-2 col-form-label">Start</label>
-                            <div class="col-10">
-                                <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput1">
-                            </div>
 
-                            <label for="example-date-input" class="col-2 col-form-label">End</label>
-                            <div class="col-10">
-                                <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput2">
-                            </div>
+                        <label for="example-date-input" class="col-2 col-form-label">End</label>
+                        <div class="col-10">
+                            <input class="form-control" type="date" value="01-01-2010" id="goldDateRangeInput2">
                         </div>
+                    </div>
                     <br>
-                        <button type="submit" class="btn btn-light border border-dark mb-2"
-                                style="border-radius:45px">Confirm
-                        </button>
-
+                    <button type="submit" class="btn btn-light border border-dark mb-2"
+                            style="border-radius:45px">Confirm
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <hr>
-<div id="section41" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+<div id="converter" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
+    <div class="container">
+        <h1>Currency converter</h1>
+        <p>Just choose currencies and type value to inputs</p>
+        <div class="row">
+            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                <br>
+                Result <h2><span class="badge badge-info"/>XX</h2>
+            </div>
+            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+            </div>
+            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                <form onsubmit="generateUrlConvert()" method="get" id="convertForm" class="form-inline">
+                    <div class="form-group mb-2">
+                        Type value and choose currency to convert.
+                    </div>
+                    <br>
+                    <label for="baseBoth" class="sr-only"></label>
+                    <div class="row">
+                        <label for="example-date-input" class="col-2 col-form-label">Value</label>
+                        <div class="col-10">
+                            <input class="form-control" type="text" id="convertValue">
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="form-group row">
+                        <label for="example-date-input" class="col-2 col-form-label">From</label>
+                        <select name="from_select" class="custom-select">
+                            <option>Select</option>
+                            <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
+                                    th:text="${tmp.symbol}" id="symbolFrom"></option>
+                        </select>
 
+                        <label for="example-date-input" class="col-2 col-form-label">To</label>
+                        <select name="to_select" class="custom-select">
+                            <option>Select</option>
+                            <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
+                                    th:text="${tmp.symbol}" id="symbolTo"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-light border border-dark mb-2"
+                            style="border-radius:45px">Confirm
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <hr>
 </div>

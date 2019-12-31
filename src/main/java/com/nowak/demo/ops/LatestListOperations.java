@@ -1,7 +1,10 @@
 package com.nowak.demo.ops;
 
+import com.nowak.demo.java_objects.ConvertDto;
 import com.nowak.demo.java_objects.LatestDto;
 import com.nowak.demo.json_pojos.Latest;
+import com.nowak.demo.json_pojos_conv.Convert;
+import com.nowak.demo.objects.Currencies;
 import reactor.core.publisher.Mono;
 import java.util.*;
 
@@ -46,5 +49,82 @@ public class LatestListOperations {
             }
         }
         return finalList;
+    }
+    public List<ConvertDto> convertAndAddToListConvert(Mono<Convert> convertMono, List<ConvertDto> finalList) {
+        Collection<ConvertDto>list = new LinkedList<>();
+        list.add(new ConvertDto("CAD", convertMono.block().getRates().getCAD()));
+        list.add(new ConvertDto("HKD", convertMono.block().getRates().getHKD()));
+        list.add(new ConvertDto("ISK", convertMono.block().getRates().getISK()));
+        list.add(new ConvertDto("PHP",convertMono.block().getRates().getPHP()));
+        list.add(new ConvertDto("DKK",convertMono.block().getRates().getDKK()));
+        list.add(new ConvertDto("HUF", convertMono.block().getRates().getHUF()));
+        list.add(new ConvertDto("CZK", convertMono.block().getRates().getCZK()));
+        list.add(new ConvertDto("AUD", convertMono.block().getRates().getAUD()));
+        list.add(new ConvertDto("RON", convertMono.block().getRates().getRON()));
+        list.add(new ConvertDto("SEK", convertMono.block().getRates().getSEK()));
+        list.add(new ConvertDto("IDR", Objects.requireNonNull(convertMono.block()).getRates().getIDR()));
+        list.add(new ConvertDto("INR", Objects.requireNonNull(convertMono.block()).getRates().getINR()));
+        list.add(new ConvertDto("BRL", Objects.requireNonNull(convertMono.block()).getRates().getBRL()));
+        list.add(new ConvertDto("RUB", Objects.requireNonNull(convertMono.block()).getRates().getRUB()));
+        list.add(new ConvertDto("HRK", Objects.requireNonNull(convertMono.block()).getRates().getHRK()));
+        list.add(new ConvertDto("JPY", Objects.requireNonNull(convertMono.block()).getRates().getJPY()));
+        list.add(new ConvertDto("THB", Objects.requireNonNull(convertMono.block()).getRates().getTHB()));
+        list.add(new ConvertDto("CHF", Objects.requireNonNull(convertMono.block()).getRates().getCHF()));
+        list.add(new ConvertDto("SGD", Objects.requireNonNull(convertMono.block()).getRates().getSGD()));
+        list.add(new ConvertDto("PLN", Objects.requireNonNull(convertMono.block()).getRates().getPLN()));
+        list.add(new ConvertDto("BGN", Objects.requireNonNull(convertMono.block()).getRates().getBGN()));
+        list.add(new ConvertDto("TRY", Objects.requireNonNull(convertMono.block()).getRates().getTRY()));
+        list.add(new ConvertDto("CNY", Objects.requireNonNull(convertMono.block()).getRates().getCNY()));
+        list.add(new ConvertDto("NOK", Objects.requireNonNull(convertMono.block()).getRates().getNOK()));
+        list.add(new ConvertDto("NZD", Objects.requireNonNull(convertMono.block()).getRates().getNZD()));
+        list.add(new ConvertDto("ZAR", Objects.requireNonNull(convertMono.block()).getRates().getZAR()));
+        list.add(new ConvertDto("USD", Objects.requireNonNull(convertMono.block()).getRates().getUSD()));
+        list.add(new ConvertDto("MXN", Objects.requireNonNull(convertMono.block()).getRates().getMXN()));
+        list.add(new ConvertDto("ILS", Objects.requireNonNull(convertMono.block()).getRates().getILS()));
+        list.add(new ConvertDto("GBP", Objects.requireNonNull(convertMono.block()).getRates().getGBP()));
+        list.add(new ConvertDto("KRW", Objects.requireNonNull(convertMono.block()).getRates().getKRW()));
+        list.add(new ConvertDto("MYR", Objects.requireNonNull(convertMono.block()).getRates().getMYR()));
+        for (ConvertDto l: list) {
+            if(l.getConvertName()!=null){
+                finalList.add(l);
+            }
+        }
+        return finalList;
+    }
+    public List<Currencies> getAllCurrencies(){
+        List <Currencies> list = new ArrayList<>();
+        list.add(new Currencies("CAD"));
+        list.add(new Currencies("HKD"));
+        list.add(new Currencies("ISK"));
+        list.add(new Currencies("PHP"));
+        list.add(new Currencies("DKK"));
+        list.add(new Currencies("HUF"));
+        list.add(new Currencies("CZK"));
+        list.add(new Currencies("AUD"));
+        list.add(new Currencies("RON"));
+        list.add(new Currencies("SEK"));
+        list.add(new Currencies("IDR"));
+        list.add(new Currencies("INR"));
+        list.add(new Currencies("BRL"));
+        list.add(new Currencies("RUB"));
+        list.add(new Currencies("HRK"));
+        list.add(new Currencies("JPY"));
+        list.add(new Currencies("THB"));
+        list.add(new Currencies("CHF"));
+        list.add(new Currencies("SGD"));
+        list.add(new Currencies("PLN"));
+        list.add(new Currencies("BGN"));
+        list.add(new Currencies("TRY"));
+        list.add(new Currencies("CNY"));
+        list.add(new Currencies("NOK"));
+        list.add(new Currencies("NZD"));
+        list.add(new Currencies("ZAR"));
+        list.add(new Currencies("USD"));
+        list.add(new Currencies("MXN"));
+        list.add(new Currencies("ILS"));
+        list.add(new Currencies("GBP"));
+        list.add(new Currencies("KRW"));
+        list.add(new Currencies("MYR"));
+        return list;
     }
 }
