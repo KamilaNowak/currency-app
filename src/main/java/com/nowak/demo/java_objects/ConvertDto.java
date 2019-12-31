@@ -4,9 +4,9 @@ import com.nowak.demo.json_pojos_conv.Rates;
 
 public class ConvertDto {
     String convertName;
-    double convertValue;
+    Double convertValue;
 
-    public ConvertDto(String convertName, double convertValue) {
+    public ConvertDto(String convertName, Double convertValue) {
         this.convertName = convertName;
         this.convertValue = convertValue;
     }
@@ -19,11 +19,11 @@ public class ConvertDto {
         this.convertName = convertName;
     }
 
-    public double getConvertValue() {
+    public Double getConvertValue() {
         return convertValue;
     }
 
-    public void setConvertValue(double convertValue) {
+    public void setConvertValue(Double convertValue) {
         this.convertValue = convertValue;
     }
 }

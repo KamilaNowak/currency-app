@@ -74,7 +74,7 @@ public class Rates {
     @JsonProperty("HUF")
     private Double hUF;
     @JsonProperty("IDR")
-    private Integer iDR;
+    private Double iDR;
     @JsonProperty("ILS")
     private Double iLS;
     @JsonProperty("INR")
@@ -251,12 +251,12 @@ public class Rates {
     }
 
     @JsonProperty("IDR")
-    public Integer getIDR() {
+    public Double getIDR() {
         return iDR;
     }
 
     @JsonProperty("IDR")
-    public void setIDR(Integer iDR) {
+    public void setIDR(Double iDR) {
         this.iDR = iDR;
     }
 

@@ -76,8 +76,8 @@
         }
 
         function generateUrlConvert() {
-            var c1 = document.getElementById('symbolFrom').value;
-            var c2 = document.getElementById('symbolTo').value;
+            var c1 = $('.custom-select-from').val();
+            var c2 = $('.custom-select-to').val();
             var val = document.getElementById('convertValue').value;
             var slash = "/";
             var link = "http://localhost:8081/convert/";
@@ -330,12 +330,31 @@
         <div class="row">
             <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
                 <br>
-                Result <h2><span class="badge badge-info"/>XX</h2>
+                Amount <span class="badge badge-success"><span th:text="${amount}"/></span><br>
+                Base <span class="badge badge-secondary"><span th:text="${convertBase}"/></span><br>
+                Date <span class="badge badge-primary"><span th:text="${convertDate}"/></span><br>
+                <table class="table">
+                    <tbody>
+                    <tr th:each="temp : ${result}">
+                        <td style="width:70px"><h2><span class="badge badge-info"><span
+                                th:text="${temp.convertValue}"/></span></h2>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
             </div>
             <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
             </div>
             <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
                 <form onsubmit="generateUrlConvert()" method="get" id="convertForm" class="form-inline">
+                    <div th:if="${error_message_convert}" class="alert alert-danger alert-dismissible fade show text-center"
+                         role="alert" th:text="${error_message_convert}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                        <strong><span th:text="${error_message_convert}"/></strong>
+                    </div>
                     <div class="form-group mb-2">
                         Type value and choose currency to convert.
                     </div>
@@ -350,14 +369,14 @@
                     <br><br>
                     <div class="form-group row">
                         <label for="example-date-input" class="col-2 col-form-label">From</label>
-                        <select name="from_select" class="custom-select">
+                        <select name="from_select" class="custom-select custom-select-from">
                             <option>Select</option>
                             <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
                                     th:text="${tmp.symbol}" id="symbolFrom"></option>
                         </select>
 
                         <label for="example-date-input" class="col-2 col-form-label">To</label>
-                        <select name="to_select" class="custom-select">
+                        <select name="to_select" class="custom-select custom-select-to">
                             <option>Select</option>
                             <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
                                     th:text="${tmp.symbol}" id="symbolTo"></option>

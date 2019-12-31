@@ -114,10 +114,13 @@ public class ViewController {
                 .bodyToMono(Latest.class);
         latest.clear();
         latest = latestListOperations.convertAndAddToList(r, latest);
-        model.addAttribute("currencies",currencies);
+
         model.addAttribute("latestDto", latest);
         model.addAttribute("latestDate", Objects.requireNonNull(r.block()).getDate());
         model.addAttribute("latestBase", Objects.requireNonNull(r.block()).getBase());
+
+        currencies = latestListOperations.getAllCurrencies();
+        model.addAttribute("currencies",currencies);
         return "main";
     }
 
@@ -149,6 +152,9 @@ public class ViewController {
         model.addAttribute("latestDto", latest);
         model.addAttribute("latestDate", Objects.requireNonNull(latestMono.block()).getDate());
         model.addAttribute("latestBase", Objects.requireNonNull(latestMono.block()).getBase());
+
+        currencies = latestListOperations.getAllCurrencies();
+        model.addAttribute("currencies",currencies);
         return "main";
     }
 
@@ -168,11 +174,18 @@ public class ViewController {
             model.addAttribute("histDto", historical);
             model.addAttribute("histDate", Objects.requireNonNull(Objects.requireNonNull(historicalMono.block()).getDate()));
             model.addAttribute("histBase", Objects.requireNonNull(historicalMono.block()).getBase());
+
+
         }
         catch (Exception e){
             model.addAttribute("error_message_date", "Something went wrong. Please check if input data are correct.");
+
+            currencies = latestListOperations.getAllCurrencies();
+            model.addAttribute("currencies",currencies);
             return "main";
         }
+        currencies = latestListOperations.getAllCurrencies();
+        model.addAttribute("currencies",currencies);
         return "main";
     }
 

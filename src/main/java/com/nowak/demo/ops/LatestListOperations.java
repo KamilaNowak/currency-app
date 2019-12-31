@@ -62,7 +62,7 @@ public class LatestListOperations {
         list.add(new ConvertDto("AUD", convertMono.block().getRates().getAUD()));
         list.add(new ConvertDto("RON", convertMono.block().getRates().getRON()));
         list.add(new ConvertDto("SEK", convertMono.block().getRates().getSEK()));
-        list.add(new ConvertDto("IDR", Objects.requireNonNull(convertMono.block()).getRates().getIDR()));
+        list.add(new ConvertDto("IDR",convertMono.block().getRates().getIDR()));
         list.add(new ConvertDto("INR", Objects.requireNonNull(convertMono.block()).getRates().getINR()));
         list.add(new ConvertDto("BRL", Objects.requireNonNull(convertMono.block()).getRates().getBRL()));
         list.add(new ConvertDto("RUB", Objects.requireNonNull(convertMono.block()).getRates().getRUB()));
@@ -85,7 +85,7 @@ public class LatestListOperations {
         list.add(new ConvertDto("KRW", Objects.requireNonNull(convertMono.block()).getRates().getKRW()));
         list.add(new ConvertDto("MYR", Objects.requireNonNull(convertMono.block()).getRates().getMYR()));
         for (ConvertDto l: list) {
-            if(l.getConvertName()!=null){
+            if(l.getConvertValue()!=null && l.getConvertName()!=null){
                 finalList.add(l);
             }
         }
