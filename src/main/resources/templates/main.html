@@ -15,13 +15,12 @@
         }
 
         .contentClass {
-            /*background: url("https://oneness.rikkazimmerman.com/wp-content/uploads/2014/04/BG-Money-SLM-2.jpg") no-repeat center center fixed;*/
+            /*background: url("https://i.imgur.com/bL0ed42.jpg") no-repeat center center fixed;*/
             /*-webkit-background-size: cover;*/
             /*-moz-background-size: cover;*/
             /*-o-background-size: cover;*/
-            /*background-size: 100%;*/
-            /*filter: brightness(100%);*/
-            /*opacity: 0.99;*/
+            /*background-size: cover;*/
+            /*background-repeat: repeat*/
         }
     </style>
     <script>
@@ -363,20 +362,20 @@
                     <div class="row">
                         <label for="example-date-input" class="col-2 col-form-label">Value</label>
                         <div class="col-10">
-                            <input class="form-control" type="text" id="convertValue">
+                            <input class="form-control" type="number" step="0.1" id="convertValue" required>
                         </div>
                     </div>
                     <br><br>
                     <div class="form-group row">
                         <label for="example-date-input" class="col-2 col-form-label">From</label>
-                        <select name="from_select" class="custom-select custom-select-from">
+                        <select name="from_select" class="custom-select custom-select-from" required>
                             <option>Select</option>
                             <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
-                                    th:text="${tmp.symbol}" id="symbolFrom"></option>
+                                    th:text="${tmp.symbol}" id="symbolFrom" ></option>
                         </select>
 
                         <label for="example-date-input" class="col-2 col-form-label">To</label>
-                        <select name="to_select" class="custom-select custom-select-to">
+                        <select name="to_select" class="custom-select custom-select-to" required>
                             <option>Select</option>
                             <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
                                     th:text="${tmp.symbol}" id="symbolTo"></option>
