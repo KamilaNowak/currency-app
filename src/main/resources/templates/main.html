@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Currency app</title>
@@ -26,14 +26,14 @@
     <script>
         function generateUrlBase() {
             var userInput = document.getElementById('baseTextField').value;
-            var hostLink = "http://localhost:8081/currency/base/";
+            var hostLink = "https://currency-application.herokuapp.com/currency/base/";
             hostLink = hostLink + userInput;
             baseForm.action = hostLink;
         }
 
         function generateUrlSymbols() {
             var userInput = document.getElementById('inputCurrencies').value;
-            var link = "http://localhost:8081/currency/symbols/";
+            var link = "https://currency-application.herokuapp.com/currency/symbols/";
             link = link + userInput;
             symbolsForm.action = link;
         }
@@ -41,26 +41,26 @@
         function generateUrlBaseSymbols() {
             var bsaeInput = document.getElementById('baseBoth').value;
             var symbolsInput = document.getElementById('symbolsBoth').value;
-            var link = "http://localhost:8081/currency/symbols/";
+            var link = "https://currency-application.herokuapp.com/currency/symbols/";
             link = link + symbolsInput + "/" + bsaeInput;
             baseSymbolsForm.action = link;
         }
 
         function generateUrlByDate() {
             var dateInput = document.getElementById('example-date-input').value;
-            var link = "http://localhost:8081/currency/date/";
+            var link = "https://currency-application.herokuapp.com/currency/date/";
             link = link + dateInput;
             dateForm.action = link;
         }
 
         function generateUrlGold() {
-            var link = "http://localhost:8081/gold";
+            var link = "https://currency-application.herokuapp.com/gold";
             goldForm.action = link;
         }
 
         function generateUrlDateGold() {
             var goldId = document.getElementById('goldDateInput').value;
-            var link = "http://localhost:8081/gold/";
+            var link = "https://currency-application.herokuapp.com/gold/";
             link = link + goldId;
             goldDateForm.action = link;
         }
@@ -69,7 +69,7 @@
             var r1 = document.getElementById('goldDateRangeInput1').value;
             var r2 = document.getElementById('goldDateRangeInput2').value;
             var slash = "/";
-            var link = "http://localhost:8081/gold/";
+            var link = "https://currency-application.herokuapp.com/gold/";
             link = link + r1 + slash + r2;
             goldDateRangeForm.action = link;
         }
@@ -79,7 +79,7 @@
             var c2 = $('.custom-select-to').val();
             var val = document.getElementById('convertValue').value;
             var slash = "/";
-            var link = "http://localhost:8081/convert/";
+            var link = "https://currency-application.herokuapp.com/convert/";
             link = link + val + slash + c1 + slash + c2;
             convertForm.action = link;
         }
@@ -101,9 +101,18 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" href="#converter"><span class="badge badge-warning">Converter</span></a>
             </li>
+
+            <br>
+            <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}">
+            <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            </div>
         </ul>
     </nav>
 </div>
+
+
 <div class="contentClass">
     <div id="latest" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
         <div class="container">
@@ -322,75 +331,87 @@
     </div>
 </div>
 <hr>
+
+
 <div id="converter" class="container-fluid " style="padding-top:70px;padding-bottom:70px">
     <div class="container">
-        <h1>Currency converter</h1>
-        <p>Just choose currencies and type value to inputs</p>
-        <div class="row">
-            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
-                <br>
-                Amount <span class="badge badge-success"><span th:text="${amount}"/></span><br>
-                Base <span class="badge badge-secondary"><span th:text="${convertBase}"/></span><br>
-                Date <span class="badge badge-primary"><span th:text="${convertDate}"/></span><br>
-                <table class="table">
-                    <tbody>
-                    <tr th:each="temp : ${result}">
-                        <td style="width:70px"><h2><span class="badge badge-info"><span
-                                th:text="${temp.convertValue}"/></span></h2>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <br>
-            </div>
-            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
-            </div>
-            <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
-                <form onsubmit="generateUrlConvert()" method="get" id="convertForm" class="form-inline">
-                    <div th:if="${error_message_convert}" class="alert alert-danger alert-dismissible fade show text-center"
-                         role="alert" th:text="${error_message_convert}">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">X</span>
-                        </button>
-                        <strong><span th:text="${error_message_convert}"/></strong>
-                    </div>
-                    <div class="form-group mb-2">
-                        Type value and choose currency to convert.
-                    </div>
-                    <br>
-                    <label for="baseBoth" class="sr-only"></label>
-                    <div class="row">
-                        <label for="example-date-input" class="col-2 col-form-label">Value</label>
-                        <div class="col-10">
-                            <input class="form-control" type="number" step="0.1" id="convertValue" required>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="form-group row">
-                        <label for="example-date-input" class="col-2 col-form-label">From</label>
-                        <select name="from_select" class="custom-select custom-select-from" required>
-                            <option>Select</option>
-                            <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
-                                    th:text="${tmp.symbol}" id="symbolFrom" ></option>
-                        </select>
 
-                        <label for="example-date-input" class="col-2 col-form-label">To</label>
-                        <select name="to_select" class="custom-select custom-select-to" required>
-                            <option>Select</option>
-                            <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
-                                    th:text="${tmp.symbol}" id="symbolTo"></option>
-                        </select>
-                    </div>
+        <div sec:authorize="isAnonymous()">
+            <div class="alert alert-danger" role="alert">
+              <h4 class="alert-heading">Log in to use Converter for a wide range of currencies</h4>
+              <hr>
+              <p class="mb-0"><a class="btn btn-outline-danger" th:href="@{/login}">Login or register</a></p>
+            </div>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <h1>Currency converter</h1>
+            <p>Just choose currencies and type value to inputs</p>
+            <div class="row">
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
                     <br>
-                    <button type="submit" class="btn btn-light border border-dark mb-2"
-                            style="border-radius:45px">Confirm
-                    </button>
-                </form>
+                    Amount <span class="badge badge-success"><span th:text="${amount}"/></span><br>
+                    Base <span class="badge badge-secondary"><span th:text="${convertBase}"/></span><br>
+                    Date <span class="badge badge-primary"><span th:text="${convertDate}"/></span><br>
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="temp : ${result}">
+                            <td style="width:70px"><h2><span class="badge badge-info"><span
+                                    th:text="${temp.convertValue}"/></span></h2>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                </div>
+                <div class="col-sm-6 col-md-7 col-lg-5 mx-auto">
+                    <form onsubmit="generateUrlConvert()" method="get" id="convertForm" class="form-inline">
+                        <div th:if="${error_message_convert}"
+                             class="alert alert-danger alert-dismissible fade show text-center"
+                             role="alert" th:text="${error_message_convert}">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                            <strong><span th:text="${error_message_convert}"/></strong>
+                        </div>
+                        <div class="form-group mb-2">
+                            Type value and choose currency to convert.
+                        </div>
+                        <br>
+                        <label for="baseBoth" class="sr-only"></label>
+                        <div class="row">
+                            <label for="example-date-input" class="col-2 col-form-label">Value</label>
+                            <div class="col-10">
+                                <input class="form-control" type="number" step="0.1" id="convertValue" required>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-group row">
+                            <label for="example-date-input" class="col-2 col-form-label">From</label>
+                            <select name="from_select" class="custom-select custom-select-from" required>
+                                <option>Select</option>
+                                <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
+                                        th:text="${tmp.symbol}" id="symbolFrom"></option>
+                            </select>
+
+                            <label for="example-date-input" class="col-2 col-form-label">To</label>
+                            <select name="to_select" class="custom-select custom-select-to" required>
+                                <option>Select</option>
+                                <option th:each="tmp : ${currencies}" th:value="${tmp.symbol}"
+                                        th:text="${tmp.symbol}" id="symbolTo"></option>
+                            </select>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-light border border-dark mb-2"
+                                style="border-radius:45px">Confirm
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<hr>
-</div>
+
 </body>
 </html>

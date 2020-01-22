@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/home", "/process-login").permitAll()
-                .antMatchers("/home").permitAll()
+                .antMatchers("/main").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
@@ -51,10 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .logoutUrl("/logout");
+                .deleteCookies("JSESSIONID", "remember-me");
 
     }
 

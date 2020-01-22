@@ -85,13 +85,14 @@ public class ViewController {
     }
 
     @GetMapping("/register")
-    public String getHomePage(@Valid @ModelAttribute("userModel") UserModel userModel, BindingResult bindingResult) {
+    public String getHomePage(@Valid @ModelAttribute("userModel") UserModel userModel, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "login-form";
         }
         User user = null;
         user = userService.findByEmail(userModel.getEmail());
         if (user != null) {
+            model.addAttribute("mess_response", "Username is taken. Choose another.");
             return "login-form";
         } else {
             User newUser = new User();
@@ -100,6 +101,7 @@ public class ViewController {
             newUser.setPhoneNumber(userModel.getPhonenumber());
             newUser.setSubscriptionCollection(Collections.singletonList(subscriptionService.findBySubscription("ROLE_STANDARD")));
             userService.save(newUser);
+            model.addAttribute("mess_response", "User registered successfully.");
         }
         return "login-form";
     }
